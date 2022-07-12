@@ -30,7 +30,7 @@ request_disk = 1 GB
 +JobDurationCategory = "Long"
 
 # Singularity settings
-+SingularityImage = "stash:///osgconnect/public/amoxley/osg-python_latest.sif"
++SingularityImage = "stash:///osgconnect/public/d2mcbrid/osg-python_latest.sif"
 #+SingularityBindCVMFS = FALSE
 
 # Send the job to Held state on failure.
