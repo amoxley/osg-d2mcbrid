@@ -1,0 +1,43 @@
+# The UNIVERSE defines an execution environment. You will almost always use VANILLA.
+universe = vanilla
+
+# EXECUTABLE is the program your job will run It's often useful
+# to create a shell script to "wrap" your actual work.
+executable = wrapper.sh
+arguments = $(Cluster) $(Process) $(SimTime) $(CogT) $(Tcell) $(mean) $(shape) $(antigen)
+
+# inputs/outputs
+transfer_input_files = Agent.py, DC.py, Knee.py, LN.py, run_LN_OSG.py, TaAPC.py, Tcell.py
+transfer_output_files = output
+
+# ERROR and OUTPUT are the error and output channels from your job
+# that HTCondor returns from the remote host.
+error = logs/job.$(Cluster).$(Process).error
+output = logs/job.$(Cluster).$(Process).output
+
+# The LOG file is where HTCondor places information about your
+# job's status, success, and resource consumption.
+log = logs/job.$(Cluster).$(Process).log
+
+# These are good base requirements for your jobs on OSG. It is specific on OS and
+# OS version, core cound and memory, and wants to use the software modules.
+#requirements = (HAS_CVMFS_oasis_opensciencegrid_org == TRUE)
+#requirements = (CVMFS_oasis_opensciencegrid_org_REVISION >= 9677)
+requirements = HAS_SINGULARITY == TRUE
+request_cpus = 2
+request_memory = 14 GB
+request_disk = 1 GB
++JobDurationCategory = "Long"
+
+# Singularity settings
++SingularityImage = "stash:///osgconnect/public/amoxley/osg-python_latest.sif"
+#+SingularityBindCVMFS = FALSE
+
+# Send the job to Held state on failure.
+#on_exit_hold = (ExitBySignal == True) || (ExitCode != 0)
+
+# Periodically retry the jobs every 5 minutes, up to a maximum of 5 retries.
+#periodic_release = (NumJobStarts < 5) && ((CurrentTime - EnteredCurrentStatus) > 300)
+
+# Queue up the data files in a subdirectory, 1 per execute server
+queue SimTime CogT Tcell mean shape antigen from run_conditions.txt
