@@ -25,7 +25,7 @@ log = logs/job.$(Cluster).$(Process).log
 #requirements = (CVMFS_oasis_opensciencegrid_org_REVISION >= 9677)
 requirements = HAS_SINGULARITY == TRUE
 request_cpus = 2
-request_memory = 14 GB
+request_memory = 5 GB
 request_disk = 1 GB
 +JobDurationCategory = "Long"
 
